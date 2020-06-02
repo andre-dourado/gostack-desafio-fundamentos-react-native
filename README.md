@@ -2,7 +2,7 @@
     <img src="https://github.com/andrewdourado/gostack-desafio-fundamentos-react-native/blob/master/src/assets/logo@2x.png" alt="GoMarketplace logo" width="300px">
 </h1>
 
-<h3 align="center">Desafio Fundamentos do React Native</h3>
+<h3 align="center">Desafio 08: Fundamentos do React Native</h3>
 
 <p align="center">
   <img src="https://github.com/andrewdourado/gostack-desafio-fundamentos-react-native/blob/master/demo.gif" alt="GoMarketplace gif" />   
