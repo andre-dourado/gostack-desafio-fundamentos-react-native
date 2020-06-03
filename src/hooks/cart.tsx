@@ -39,13 +39,42 @@ const CartProvider: React.FC = ({ children }) => {
     loadProducts();
   }, []);
 
+  const increment = useCallback(
+    async id => {
+      const newProducts = products.map(product =>
+        product.id === id
+          ? { ...product, quantity: product.quantity + 1 }
+          : product,
+      );
+
+      setProducts(newProducts);
+
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newProducts));
+    },
+    [products],
+  );
+
+  const decrement = useCallback(
+    async id => {
+      const newProducts = products.map(product =>
+        product.id === id
+          ? { ...product, quantity: product.quantity - 1 }
+          : product,
+      );
+
+      setProducts(newProducts);
+
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newProducts));
+    },
+    [products],
+  );
+
   const addToCart = useCallback(
     async (product: Product) => {
-
       const productIndex = products.findIndex(item => item.id === product.id);
 
       if (productIndex === -1) {
-        const arr = [...products, {...product, quantity: 1}];
+        const arr = [...products, { ...product, quantity: 1 }];
 
         setProducts(arr);
 
@@ -54,51 +83,7 @@ const CartProvider: React.FC = ({ children }) => {
         increment(product.id);
       }
     },
-    [products],
-  );
-
-  const increment = useCallback(
-    async id => {
-      const arr = products.map(product => {
-        const item = product;
-        if (item.id === id) {
-          item.quantity += 1;
-        }
-        return item;
-      });
-
-      setProducts(arr);
-
-      await AsyncStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(products),
-      );
-    },
-    [products],
-  );
-
-  const decrement = useCallback(
-    async id => {
-      const arr = [...products];
-
-      for (let i = 0; i < arr.length; i += 1) {
-        if (arr[i].id === id) {
-          arr[i].quantity -= 1;
-
-          if (arr[i].quantity === 0) {
-            arr.splice(i, 1);
-          }
-        }
-      }
-
-      setProducts(arr);
-
-      await AsyncStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(arr),
-      );
-    },
-    [products],
+    [products, increment],
   );
 
   const value = React.useMemo(
